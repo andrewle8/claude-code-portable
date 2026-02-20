@@ -1,6 +1,8 @@
 node/
 npm-global/
+npm-cache/
 config/
+temp/
 *.zip
 ._*
 .DS_Store

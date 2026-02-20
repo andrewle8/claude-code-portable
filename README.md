@@ -56,8 +56,12 @@ claude-portable/
 └── config/             ← Auth and settings (created on first launch)
 ```
 
+## Zero Trace on Host
+
+All scripts redirect `TEMP`, `TMP`, `HOME`, `USERPROFILE`, and `npm_config_cache` onto the drive itself. Nothing is written to the host machine's filesystem - no temp files, no npm cache, no config leftovers.
+
 ## Notes
 
-- The `node/`, `npm-global/`, and `config/` directories are gitignored since they contain binaries and auth tokens
+- The `node/`, `npm-global/`, `npm-cache/`, `config/`, and `temp/` directories are gitignored since they contain binaries, auth tokens, and temp data
 - Auto-update works normally since `NPM_CONFIG_PREFIX` points to the drive
 - Drive letter changes between machines are handled automatically via `%~dp0`
