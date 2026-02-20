@@ -1,0 +1,7 @@
+node/
+npm-global/
+config/
+*.zip
+._*
+.DS_Store
+Thumbs.db
