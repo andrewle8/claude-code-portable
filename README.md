@@ -29,6 +29,7 @@ Run Claude Code from a USB drive on any Windows machine. No installation on the 
 ## Requirements
 
 - Windows 10 or later
+- USB 3.0+ drive recommended (temp files and npm cache are stored on the drive)
 - Internet connection (for setup and Claude Code usage)
 - A Claude subscription or Anthropic API key
 
@@ -53,15 +54,33 @@ claude-portable/
 ├── install-claude.cmd  ← Alternative: install only (no Node download)
 ├── node/               ← Portable Node.js (created by setup)
 ├── npm-global/         ← Claude Code package (created by setup)
-└── config/             ← Auth and settings (created on first launch)
+├── npm-cache/          ← npm download cache (created by setup)
+├── config/             ← Auth, settings, and redirected AppData (created by setup)
+└── temp/               ← Temporary files (created by setup)
 ```
 
 ## Zero Trace on Host
 
-All scripts redirect `TEMP`, `TMP`, `HOME`, `USERPROFILE`, and `npm_config_cache` onto the drive itself. Nothing is written to the host machine's filesystem - no temp files, no npm cache, no config leftovers.
+All scripts redirect the following onto the drive itself:
+
+| Variable | Redirected To | Purpose |
+|----------|--------------|---------|
+| `HOME` | `config/` | Unix-style home (used by npm, git, Node.js) |
+| `USERPROFILE` | `config/` | Windows home directory |
+| `APPDATA` | `config/AppData/Roaming/` | Windows app data (used by env-paths, npm fallbacks) |
+| `LOCALAPPDATA` | `config/AppData/Local/` | Windows local app data (used for Claude debug logs) |
+| `TEMP` / `TMP` | `temp/` | Temporary files |
+| `npm_config_cache` | `npm-cache/` | npm download cache |
+| `NPM_CONFIG_PREFIX` | `npm-global/` | npm global install location |
+| `CLAUDE_CONFIG_DIR` | `config/` | Claude Code config and credentials |
+| `NODE_REPL_HISTORY` | `config/` | Node.js REPL history file |
+
+Nothing is written to the host machine's filesystem.
 
 ## Notes
 
 - The `node/`, `npm-global/`, `npm-cache/`, `config/`, and `temp/` directories are gitignored since they contain binaries, auth tokens, and temp data
 - Auto-update works normally since `NPM_CONFIG_PREFIX` points to the drive
 - Drive letter changes between machines are handled automatically via `%~dp0`
+- Place the folder at a short path (e.g., `E:\claude\`) to avoid Windows 260-character path limits
+- First login is required on each new USB drive — credentials are stored on the drive in `config/`
