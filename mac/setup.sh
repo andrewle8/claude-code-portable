@@ -54,18 +54,13 @@ if [[ ! -x "$HOME/.local/bin/claude" ]]; then
     exit 1
 fi
 
-# Copy the notarized binary + version data to the drive.
-# Per Anthropic docs, runtime data lives at ~/.local/share/claude.
+# Copy the notarized binary to the drive.
+# The binary is self-contained; runtime data is written to
+# ~/.local/share/claude at launch, which with HOME redirected
+# lands on the drive automatically.
 echo "Copying binary to USB drive..."
 cp -p "$HOME/.local/bin/claude" "$BIN_DIR/claude"
 chmod +x "$BIN_DIR/claude"
-
-if [[ -d "$HOME/.local/share/claude" ]]; then
-    mkdir -p "$DRIVE_ROOT/mac/share"
-    # -RL resolves symlinks because exFAT does not support them.
-    rm -rf "$DRIVE_ROOT/mac/share/claude"
-    cp -RL "$HOME/.local/share/claude" "$DRIVE_ROOT/mac/share/claude"
-fi
 
 # Verify signature survived the copy (notarization is embedded).
 echo

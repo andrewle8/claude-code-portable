@@ -36,8 +36,10 @@ export XDG_CACHE_HOME="$DRIVE_ROOT/config/cache"
 export XDG_DATA_HOME="$DRIVE_ROOT/config/share"
 export XDG_STATE_HOME="$DRIVE_ROOT/config/state"
 
-# Override the binary's bundled data dir so updates land on the drive.
-export CLAUDE_LOCAL_PATH="$DRIVE_ROOT/mac/share/claude"
+# Note: Claude Code reads runtime data from ~/.local/share/claude
+# by default. With HOME redirected to the drive above, that path
+# becomes $DRIVE_ROOT/config/.local/share/claude — also on the
+# drive. No separate override needed.
 
 # ---- git isolation: stop the host's credential helper from running ----
 export GIT_CONFIG_GLOBAL="$DRIVE_ROOT/config/.gitconfig"
