@@ -1,9 +1,22 @@
+# Runtime directories on the drive (never commit)
 node/
 npm-global/
 npm-cache/
 config/
 temp/
+
+# Mac native binary cache (created by mac/setup.sh)
+mac/bin/
+mac/share/
+
+# Misc
 *.zip
 ._*
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Editor / tooling
+.vscode/
+.idea/
+*.swp
